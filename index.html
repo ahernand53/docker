@@ -39,8 +39,47 @@
     <div class="container">
         <section>
             <h2>Introducción a Docker</h2>
+
             <h3>Introducción y fundamentos de Docker</h3>
-            <p>...</p>
+            <p><strong>Docker</strong> es una plataforma abierta para que desarrolladores y administradores de sistemas desarrollen, envíen y ejecuten aplicaciones distribuidas, ya sea en computadoras portátiles, maquinas virtuales de centros de datos o en la nube.</p>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/79/Docker_%28container_engine%29_logo.png" alt="" class="img-responsive">
+            <p><strong>Docker</strong> empaqueta software en <strong>"contenedores"</strong> que incluyen en ellos todo lo necesario para que dicho software se ejecute, incluidas librerías. Con <strong>Docker</strong> se puede implementar y ajustar la escala de aplicaciones de una forma rápida en cualquier entorno con la garantía de que el código se ejecutará.</p>
+            <p>A primera vista se piensa en <strong>Docker</strong> como una especie de máquina virtual "liviana", pero la verdad no lo es. En <strong>Docker</strong> no existe un <strong>hypervisor</strong> que virtualice hardware sobre el cual se corra un sistema operativo completo. En <strong>Docker</strong> lo que se hace es usar las funcionalidades del <strong>Kernel</strong> para encapsular un sistema, de esta forma el proyecto que correo dentro de el no tendrá conocimiento que está en un <strong>contenedor</strong>. Los <strong>contenedores</strong> se encuentran aislados entre sí y se comportaran como máquinas independientes.</p>
+            <p>Iniciar un <strong>contenedor</strong> no tiene un gran impacto a diferencia de iniciar una máquina virtual ya que no tiene que iniciar un sistema operativo completo (desde cero). Gracias al uso de <strong>contenedores</strong> la demanda de recursos baja limitándose sólo al consumo de la aplicación que contenga. Un <strong>contenedor</strong> inicia en milisegundos.</p>
+            
+            <h3>Contenedores y VMs</h3>
+            <p>
+                Anteriormente hablamos de manera de introducción sobre los <strong>contenedores</strong> pero ahora definamos en sí este concepto, <strong>Docker</strong> trabaja con algo que se llama <strong>"contenedores de Linux"</strong> estos son un conjunto de tecnologías que juntas forman un <strong>contenedor</strong> (de <strong>Docker</strong>), este conjunto de tecnologías se llaman:
+                <!-- Lista desordenada -->
+                <ul>
+                    <li><strong>Namespaces:</strong> Permita a la aplicación que corre en un <strong>contenedor</strong> de <strong>Docker</strong> tener una vista de los recursos del sistema operativo.</li>
+                    <li><strong>Cgroups:</strong> Permiten limitar y medir los recursos que se encuentran disponibles en el sistema operativo.</li>
+                    <li><strong>Chroot:</strong> Permite tener en el <strong>contenedor</strong> una vista de un sistema "falso" para el mismo, es decir, crea su propio entorno de ejecución con su propio <strong>root</strong> y home.</li>
+                </ul>
+            </p>
+            <p>
+                Algunas de las características más notables de un <strong>contenedor</strong> son:
+                <!-- Lista desordenada -->
+                <ul>
+                    <li>Los contenedores son más livianos (ya que trabajan directamente sobre el <strong>Kernel</strong>) que las maquinas virtuales.</li>
+                    <li>No es necesario instalar un sistema operativo por <strong>contenedor</strong>.</li>
+                    <li>Menor uso de los recursos de la máquina.</li>
+                    <li>Mayor cantidad de <strong>contenedores</strong> por equipo físico.</li>
+                    <li>Mejor portabilidad.</li>
+                </ul>
+            </p>
+            <img src="https://www.redeszone.net/app/uploads/2016/02/docker-vs-virtual-machines.png" alt="Diferencias entre una máquina virtual un un contenedor de Docker" class="img-responsive">
+            
+            <h3>Instalación</h3>
+            <p>
+                En este caso veremos como instalar <strong>Docker</strong> en <strong>Linux</strong>, es importante saber que se debe tener un sistema operativo de 64 bits, los pasos son los siguientes:
+                <!-- Lista ordenada -->
+                <ol>
+                    <li>Acceder a <a href="https://get.docker.com/" target="_blank" rel="nofollow">get.docker.com</a></li>
+                    <li>Copiar el comando para ejecutar el script.</li>
+                    <li>Pegar el comando y ejecutar el script de instalación de <strong>Docker</strong>.</li>
+                </ol>
+            </p>
         </section>
 
         <section>
