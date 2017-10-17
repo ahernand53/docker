@@ -44,7 +44,7 @@
             <p><strong>Docker</strong> es una plataforma abierta para que desarrolladores y administradores de sistemas desarrollen, envíen y ejecuten aplicaciones distribuidas, ya sea en computadoras portátiles, maquinas virtuales de centros de datos o en la nube.</p>
             <img src="https://upload.wikimedia.org/wikipedia/commons/7/79/Docker_%28container_engine%29_logo.png" alt="" class="img-responsive">
             <p><strong>Docker</strong> empaqueta software en <strong>"contenedores"</strong> que incluyen en ellos todo lo necesario para que dicho software se ejecute, incluidas librerías. Con <strong>Docker</strong> se puede implementar y ajustar la escala de aplicaciones de una forma rápida en cualquier entorno con la garantía de que el código se ejecutará.</p>
-            <p>A primera vista se piensa en <strong>Docker</strong> como una especie de máquina virtual "liviana", pero la verdad no lo es. En <strong>Docker</strong> no existe un <strong>hypervisor</strong> que virtualice hardware sobre el cual se corra un sistema operativo completo. En <strong>Docker</strong> lo que se hace es usar las funcionalidades del <strong>Kernel</strong> para encapsular un sistema, de esta forma el proyecto que correo dentro de el no tendrá conocimiento que está en un <strong>contenedor</strong>. Los <strong>contenedores</strong> se encuentran aislados entre sí y se comportaran como máquinas independientes.</p>
+            <p>A primera vista se piensa en <strong>Docker</strong> como una especie de máquina virtual "liviana", pero la verdad no lo es. En <strong>Docker</strong> no existe un <strong>hypervisor</strong> que virtualice hardware sobre el cual corra un sistema operativo completo. En <strong>Docker</strong> lo que se hace es usar las funcionalidades del <strong>Kernel</strong> para encapsular un sistema, de esta forma el proyecto que corre dentro de el no tendrá conocimiento que está en un <strong>contenedor</strong>. Los <strong>contenedores</strong> se encuentran aislados entre sí y se comportaran como máquinas independientes.</p>
             <p>Iniciar un <strong>contenedor</strong> no tiene un gran impacto a diferencia de iniciar una máquina virtual ya que no tiene que iniciar un sistema operativo completo (desde cero). Gracias al uso de <strong>contenedores</strong> la demanda de recursos baja limitándose sólo al consumo de la aplicación que contenga. Un <strong>contenedor</strong> inicia en milisegundos.</p>
             
             <h3>Contenedores y VMs</h3>
@@ -52,8 +52,8 @@
                 Anteriormente hablamos de manera de introducción sobre los <strong>contenedores</strong> pero ahora definamos en sí este concepto, <strong>Docker</strong> trabaja con algo que se llama <strong>"contenedores de Linux"</strong> estos son un conjunto de tecnologías que juntas forman un <strong>contenedor</strong> (de <strong>Docker</strong>), este conjunto de tecnologías se llaman:
                 <!-- Lista desordenada -->
                 <ul>
-                    <li><strong>Namespaces:</strong> Permita a la aplicación que corre en un <strong>contenedor</strong> de <strong>Docker</strong> tener una vista de los recursos del sistema operativo.</li>
-                    <li><strong>Cgroups:</strong> Permiten limitar y medir los recursos que se encuentran disponibles en el sistema operativo.</li>
+                    <li><strong>Namespaces:</strong> Permite a la aplicación que corre en un <strong>contenedor</strong> de <strong>Docker</strong> tener una vista de los recursos del sistema operativo.</li>
+                    <li><strong>Cgroups:</strong> Permite limitar y medir los recursos que se encuentran disponibles en el sistema operativo.</li>
                     <li><strong>Chroot:</strong> Permite tener en el <strong>contenedor</strong> una vista de un sistema "falso" para el mismo, es decir, crea su propio entorno de ejecución con su propio <strong>root</strong> y home.</li>
                 </ul>
             </p>
@@ -78,6 +78,63 @@
                     <li>Acceder a <a href="https://get.docker.com/" target="_blank" rel="nofollow">get.docker.com</a></li>
                     <li>Copiar el comando para ejecutar el script.</li>
                     <li>Pegar el comando y ejecutar el script de instalación de <strong>Docker</strong>.</li>
+                    <li>Verificar si <strong>Docker</strong> esta instalado con los comando <kbd>docker info</kbd> o <kbd>docker version</kbd></li>
+                    <li>Crear un "Hello World" con <strong>Docker</strong> usando el comando <kbd>docker hello-world</kbd></li>
+                </ol>
+            </p>
+
+            <h3>Docker Engine e Imágenes</h3>
+            <p>Una imagen según <strong>Docker</strong> es una plantilla de solo lectura vacía o con un aplicación pre-instalada para la creación de contenedores, estas pueden ser creadas por nosotros o terceros. Se pueden guardar en un registro interno o público, puedes encontrar imágenes en <a href="https://hub.docker.com/" target="_blank" rel="nofollow">hub.docker.com</a></p>
+            <p>Para descargar imágenes de un repositorio externo, se utiliza en comando <kbd>docker pull</kbd></p>
+            <p>Cuando se ejecuta un contenedor con el comando <kbd>docker run</kbd> las imágenes son descargadas automáticamente.</p>
+            <p>
+                Algunos comandos útiles para el manejo de imágenes y contenedores en <strong>Docker</strong> son los siguientes:
+                <!-- Lista desordenada -->
+                <ul>
+                    <li><kbd>docker images</kbd> Lista las imágenes locales.</li>
+                    <li><kbd>docker pull [nombre de la imagen]</kbd> Descarga una imagen de <strong>Docker</strong>.</li>
+                    <li><kbd>docker pull [nombre de la imagen]:[tag]</kbd> Descarga una imagen de <strong>Docker</strong> con un tag en especifico.</li>
+                    <li><kbd>docker ps</kbd> Lista los contenedores que se encuentran en ejecución.</li>
+                    <li><kbd>docker ps -a</kbd> Lista todos los contenedores que estén o no en ejecución.</li>
+                    <li><kbd>docker ps -a -q</kbd> Lista y muestra sólo los ID de todos los contenedores que estén o no en ejecución.</li>
+                    <li><kbd>docker ps -a --no-trunc</kbd> Muestra el formato extendido del ID de los <strong>contenedores</strong>.</li>
+                    <li><kbd>docker ps --filter="[tipo de filtrado]"</kbd> Filtra los contenedores en función del código de salida, del estado...</li>
+                    <li><kbd>docker ps --help</kbd> Muestra un menú de ayuda.</li>
+                    <li><kbd>docker attach [ID/nombre del contenedor]</kbd> Permite ingresar nuevamente a un <strong>contenedor</strong> creado anteriormente.</li>
+                    <li><kbd>docker run --name [nombre del contenedor] [imagen]</kbd> Permite iniciar un <strong>contenedor</strong> con un nombre.</li>
+                    <li><kbd>docker rm [ID/nombre del contenedor]</kbd> Permite eliminar un <strong>contenedor</strong>.</li>
+                    <li><kbd>docker rm [ID/nombre...] [ID/nombre...] [ID/nombre...]</kbd> Permite eliminar más de un <strong>contenedor</strong>.</li>
+                    <li><kbd>docker logs [ID/nombre del contenedor]</kbd> Muestra los logs de un <strong>contenedor</strong>.</li>
+                    <li><kbd>docker logs -f [ID/nombre del contenedor]</kbd> Muestra los logs en tiempo real de un <strong>contenedor</strong>.</li>
+                    <li><kbd>docker exec [opciones] [ID/nombre del contenedor] [comando]</kbd>Permite ejecutar nuevas acciones en un <strong>contenedor</strong>.</li>
+                    <li><kbd>docker start -a [ID/nombre del contenedor]</kbd> Iniciar nuevamente un <strong>contenedor</strong>.</li>
+                    <li><kbd>docker pause [ID/nombre del contenedor]</kbd> Permite pausar un <strong>contenedor</strong> en ejecución.</li>
+                    <li><kbd>docker unpause [ID/nombre del contenedor]</kbd> Permite reanudar un <strong>contenedor</strong> pausado.</li>
+                    <li><kbd>docker stop [ID/nombre del contenedor]</kbd> Permite detener un <strong>contenedor</strong> en ejecución.</li>
+                    <li><kbd>docker kill [ID/nombre del contenedor]</kbd> Permite matar (detener forzosamente) un <strong>contenedor</strong> en ejecución.</li>
+                    <!-- <li><kbd>docker </kbd></li> -->
+                    <li><kbd>docker inspect</kbd> Muestra información útil de un <strong>contenedor</strong>.</li>
+                </ul>
+            </p>
+            <p>Con el comando <kbd>docker run [opciones] [imagen] [comando] [args]</kbd> se creará un contenedor a partir de una imagen. Si <strong>Docker</strong> no consigue la imagen en el área local la descargará.</p>
+            <p>
+                Por medio de las opciones que se les pasa a los <strong>contenedores</strong>, estos pueden ser interactivos. Algunas muy importantes de conocer son:
+                <!-- Lista desordenada -->
+                <ul>
+                    <li><kbd>-i</kbd> Le indica a <strong>Docker</strong> que se utilizará el <strong>STDIN</strong> del <strong>contenedor</strong>.</li>
+                    <li><kbd>-t</kbd> Le indica a <strong>Docker</strong> que se requiere una pseudo-terminal en el <strong>contenedor</strong>.</li>
+                    <li><kbd>-d</kbd> Le indica a <strong>Docker</strong> que el <strong>contenedor</strong> correrá en el background.</li>
+                    <li><kbd>-P</kbd> Expone los puertos utilizados por un <strong>contenedor</strong>.</li>
+                </ul>
+            </p>
+            <p>Con las combinaciones de teclas <kbd class="black">CNTRL + PQ</kbd> el servicio de <strong>Docker</strong> quedará corriendo en el background.</p>
+            <p>
+                Existen tres formas de crear imágenes:
+                <!-- Lista ordenada -->
+                <ol>
+                    <li>Hacer <strong>commit</strong> de los contenidos de un <strong>contenedor</strong>: <kbd>docker commit [ID/nombre...] [nombre para la imagen]:[tag]</kbd></li>
+                    <li>Construir una imagen basada en un <strong>Dockerfile</strong>.</li>
+                    <li>Importar un archivo <strong>Tar</strong> a <strong>Docker</strong> con el contenido de un imagen.</li>
                 </ol>
             </p>
         </section>
