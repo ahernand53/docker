@@ -127,6 +127,7 @@
                     <li><kbd>-t</kbd> Le indica a <strong>Docker</strong> que se requiere una pseudo-terminal en el <strong>contenedor</strong>.</li>
                     <li><kbd>-d</kbd> Le indica a <strong>Docker</strong> que el <strong>contenedor</strong> correrá en el background.</li>
                     <li><kbd>-P</kbd> Expone los puertos utilizados por un <strong>contenedor</strong>.</li>
+                    <li><kbd>-p [puerto "del contenedor":puerto "de la aplicación"]</kbd> Permite establecer un puerto.</li>
                 </ul>
             </p>
             <p>Con las combinaciones de teclas <kbd class="black">CNTRL + PQ</kbd> el servicio de <strong>Docker</strong> quedará corriendo en el background.</p>
@@ -181,7 +182,6 @@
                     <li><kbd>docker run -it -v [nombre del volumen]:/[punto/directorio de montaje] [imagen] [comando]</kbd> Permite correr un <strong>contenedor</strong> de forma interactiva que contendrá un volumen.</li>
                     <li><kbd>docker volumen inspect [nombre del volumen]</kbd> Muestra información de interés relacionada al volumen.</li>
                     <li><kbd>docker volumen rm [nombre del volumen]</kbd> Permite eliminar un volumen.</li>
-                    <!-- <li><kbd>docker </kbd></li> -->
                 </ul>
             </p>
 
@@ -202,7 +202,6 @@
                     <li><kbd>openssl req -subj "/CN=client" -new -key client-key.pem -out client.csr</kbd></li>
                     <li><kbd>echo "extendedKeyUsage = clientAuth" > extfile.cnf</kbd></li>
                     <li><kbd>openssl x506 -req -days 365 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out client-cert.pem -extfile extfile.cnf</kbd></li>
-                    <!-- <li><kbd></kbd></li> -->
                 </ul>
             </p>
             <p>
@@ -254,6 +253,78 @@
 
             <h3>Redes</h3>
             <p>Por defecto, al instalar <strong>Docker</strong> en <strong>Linux</strong> se crea una interfaz de red virtual llamada <strong>docker0</strong> en el equipo host.</p>
+            <p>
+                El comando <kbd>docker network</kbd> permite interactuar con las redes de <strong>Docker</strong> y los contenedores dentro de ellas, unos comandos importantes a tomar en cuenta son:
+                <!-- Lista desordenada -->
+                <ul>
+                    <li><kbd>docker network create [nombre de la red]</kbd> Permite crear una red.</li>
+                    <li><kbd>docker network connect [nombre de la red][nombre del contenedor] </kbd> Permite conectar un contenedor de una red.</li>
+                    <li><kbd>docker network ls</kbd> Lista las redes existentes.</li>
+                    <li><kbd>docker network rm</kbd> Permite eliminar una red.</li>
+                    <li><kbd>docker network disconnect</kbd> Permite desconectar un contenedor de una red.</li>
+                    <li><kbd>docker network inspect</kbd> Muestra información de interés sobre las redes de <strong>Docker</strong>.</li>
+                    <!-- <li><kbd>docker network </kbd></li> -->
+                    <li><kbd>--net [nombre de la red]</kbd> Utilizar esta bandera al crear un <strong>contenedor</strong> permite especificar la red en la cual estará dicho <strong>contenedor</strong>.</li>
+                    <li><kbd>--link [nombre del contenedor]</kbd> Permite enlazar dos <strong>contenedor</strong> y así comunicarse entre ellos por medio de su nombre.</li>
+                </ul>
+            </p>
+            <img src="https://docs.docker.com/engine/userguide/networking/images/working.png" alt="Redes de Docker" class="img-responsive">
+            <p>La red <strong>bridge</strong> es la que utilizan todos los <strong>contenedores</strong> por defecto, la <strong>host</strong> permite que los <strong>contenedores</strong> compartan la misma IP que la del equipo host.</p>
+        
+            <h3>Docker Machine</h3>
+            <p><a href="https://github.com/docker/machine/releases" target="_blank">Machine</a> es una herramienta para provisionar hosts de <strong>Docker</strong> y configurar el Engine en los mismos.</p>
+            
+            <h3>Docker Compose</h3>
+            <p><a href="https://github.com/docker/compose/releases" target="_blank">Compose</a> es una herramienta para crear y administrar aplicaciones multi-contenedor.</p>
+            <p>Los microservicios son aplicaciones individuales que tiene un comportamiento independiente y hablan un protocolo en común, por ejemplo, JSON sobre HTTP.</p>
+            <img src="https://foxutech.com/wp-content/uploads/2017/06/docker-compose1.png" alt="Docker compose" class="img-responsive">
+            <p>En una arquitectura de microservicios existen muchos servicios, por tal motivo tiene múltiples componentes para correr.</p>
+            <p><strong>docker-compose.yml</strong> define los servicios que componeme la aplicación y cada servicio contiene las instrucciones para construir y ejecutar el contenedor.</p>
+<pre>
+    web:
+        build: [ubicación del archivo Dockerfile]
+        links:
+            - [nombre del contenedor a enlazar]
+        ports:
+    #   expose:
+    #       - "[puerto en el que escucha la aplicación]"
+            - "[puerto en el que escuchará el contenedor]:[puerto en el que escucha la aplicación]"
+    redis:
+        image: [nombre de la imagen]
+    # lb:
+    #     image: tutum/haproxy
+    #     links:
+    #         - web
+    #     ports:
+    #         - "80:80"
+    #     environment:
+    #         - BACKEND_PORT=5000
+    #         - BALANCE=roundrobin
+</pre>
+
+            <p>
+                Algunos comandos para gestionar de Docker-compose son:
+                <!-- Lista desordenada -->
+                <ul>
+                    <li><kbd>docker-compose up</kbd> Inicia los microservicios definidos en <strong>docker-compose.yml</strong>.</li>
+                    <li><kbd>docker-compose up -d</kbd> Inicia los microservicios definidos en <strong>docker-compose.yml</strong> y correr los <strong>contenedores</strong> en el background.</li>
+                    <li><kbd>docker-compose build</kbd> Construye desde 0 los microservicios si se realizó algún cambio.</li>
+                    <li><kbd>docker-compose logs</kbd> Muestra todos los logs de todos los servicios.</li>
+                    <li><kbd>docker-compose logs [nombre del microservicio]</kbd> Muestra los logs de un servicio en particular.</li>
+                    <li><kbd>docker-compose rm [microservicio]</kbd> Permite eliminar un servicio, siempre y cuando este se encuentre detenido.</li>
+                    <li><kbd>docker-compose stop</kbd> Permite detener todos los microservicios que se encuentren en ejecución.</li>
+                    <li><kbd>docker-compose down</kbd> Detiene todos los microservicios y los elimina que se encuentren en ejecución.</li>
+                    <li><kbd>docker-compose help</kbd> Muestra un menú de ayuda con todos los comandos de <kbd>docker-compose</kbd></li>
+                    <li><kbd>docker-compose -f [docker-compose].yml [comando]</kbd> Permite usar un archivo de configuración de docker-compose.yml con otro nombre.</li>
+                    <!-- <li><kbd>docker-compose </kbd></li> -->
+                </ul>
+            </p>
+            <p> En una arquitectura de microservicios, generalmente tenemos la ventaja de poder escalar un servicio específico para soportar la carga.
+                <!-- Lista desordenada -->
+                <ul>
+                    <li><kbd>docker-compose scale [servicio]=[instancias de escalar]</kbd> Permite escalar servicios (mapeados en puertos distintos).</li>
+                </ul>
+            </p>
         </section>
 
         <section>
