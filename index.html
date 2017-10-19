@@ -88,7 +88,7 @@
             <p>Para descargar imágenes de un repositorio externo, se utiliza en comando <kbd>docker pull</kbd></p>
             <p>Cuando se ejecuta un contenedor con el comando <kbd>docker run</kbd> las imágenes son descargadas automáticamente.</p>
             <p>
-                Algunos comandos útiles para el manejo de imágenes y contenedores en <strong>Docker</strong> son los siguientes:
+                Algunos comandos útiles para el manejo de imágenes y <strong>contenedores</strong> en <strong>Docker</strong> son los siguientes:
                 <!-- Lista desordenada -->
                 <ul>
                     <li><kbd>docker images</kbd> Lista las imágenes locales.</li>
@@ -104,16 +104,18 @@
                     <li><kbd>docker run --name [nombre del contenedor] [imagen]</kbd> Permite iniciar un <strong>contenedor</strong> con un nombre.</li>
                     <li><kbd>docker rm [ID/nombre del contenedor]</kbd> Permite eliminar un <strong>contenedor</strong>.</li>
                     <li><kbd>docker rm [ID/nombre...] [ID/nombre...] [ID/nombre...]</kbd> Permite eliminar más de un <strong>contenedor</strong>.</li>
+                    <li><kbd>docker rmi [nombre de la imagen]</kbd> Permite eliminar una imagen.</li>
                     <li><kbd>docker logs [ID/nombre del contenedor]</kbd> Muestra los logs de un <strong>contenedor</strong>.</li>
                     <li><kbd>docker logs -f [ID/nombre del contenedor]</kbd> Muestra los logs en tiempo real de un <strong>contenedor</strong>.</li>
                     <li><kbd>docker exec [opciones] [ID/nombre del contenedor] [comando]</kbd>Permite ejecutar nuevas acciones en un <strong>contenedor</strong>.</li>
-                    <li><kbd>docker start -a [ID/nombre del contenedor]</kbd> Iniciar nuevamente un <strong>contenedor</strong>.</li>
+                    <li><kbd>docker start -a [ID/nombre del contenedor]</kbd> Permite iniciar nuevamente un <strong>contenedor</strong>.</li>
                     <li><kbd>docker pause [ID/nombre del contenedor]</kbd> Permite pausar un <strong>contenedor</strong> en ejecución.</li>
                     <li><kbd>docker unpause [ID/nombre del contenedor]</kbd> Permite reanudar un <strong>contenedor</strong> pausado.</li>
                     <li><kbd>docker stop [ID/nombre del contenedor]</kbd> Permite detener un <strong>contenedor</strong> en ejecución.</li>
                     <li><kbd>docker kill [ID/nombre del contenedor]</kbd> Permite matar (detener forzosamente) un <strong>contenedor</strong> en ejecución.</li>
                     <!-- <li><kbd>docker </kbd></li> -->
                     <li><kbd>docker inspect</kbd> Muestra información útil de un <strong>contenedor</strong>.</li>
+                    <li><kbd>docker history [ID/nombre del contenedor]</kbd> Muestra las capas que conforman una imagen con información referente a ella.</li>
                 </ul>
             </p>
             <p>Con el comando <kbd>docker run [opciones] [imagen] [comando] [args]</kbd> se creará un contenedor a partir de una imagen. Si <strong>Docker</strong> no consigue la imagen en el área local la descargará.</p>
@@ -136,6 +138,34 @@
                     <li>Construir una imagen basada en un <strong>Dockerfile</strong>.</li>
                     <li>Importar un archivo <strong>Tar</strong> a <strong>Docker</strong> con el contenido de un imagen.</li>
                 </ol>
+            </p>
+
+            <h3>Dockerfiles</h3>
+            <p>Un <strong>Dockerfile</strong> es un documento de texto que contiene todos los comandos que un usuario puede llamar en la línea de comando para armar una imagen.</p>
+            <p>
+                Comandos que podría contener un archivo <strong>Dockerfile</strong>:
+<pre>
+    FROM [imagen]:[tag]
+    MAINTAINER joaquinaraujojs@gmail.com
+    LABEL "[clave]": "[valor]"
+    WORKDIR /[directorio raíz del proyecto]
+    COPY [ruta-relativa-del-archivo/carpeta] [destino-del-archivo/carpeta] ./
+    ADD [URL del archivo ha descargar]
+    RUN [comando] && [comando] && ... && \
+    CMD [comando]
+    ENTRYPOINT [comando]
+    EXPOSE [puerto]
+    ENV [variable de entorno]
+</pre>
+            </p>
+            <p>
+                Los comandos a continuación permiten la construcción y configuración de una imagen a partir de un documento <strong>Dockerfile</strong>:
+                <!-- Lista desordenada -->
+                <ul>
+                    <li><kbd>docker build [ruta del dockerfile]</kbd> Inicializa la constricción de una imagen a partir de un archivo <strong>Dockerfile</strong>.</li>
+                    <li><kbd>docker build -t [nombre-de-la-imagen:tag] [ruta...]</kbd> Permite establecer un nombre y un tag a la imagen a generar.</li>
+
+                </ul>
             </p>
         </section>
 
