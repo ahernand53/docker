@@ -85,6 +85,7 @@
 
             <h3>Docker Engine e Imágenes</h3>
             <p>Una imagen según <strong>Docker</strong> es una plantilla de solo lectura vacía o con un aplicación pre-instalada para la creación de contenedores, estas pueden ser creadas por nosotros o terceros. Se pueden guardar en un registro interno o público, puedes encontrar imágenes en <a href="https://hub.docker.com/" target="_blank" rel="nofollow">hub.docker.com</a></p>
+            <img src="http://www.programering.com/images/remote/ZnJvbT1vc2NoaW5hJnVybD1uNUdjdWNETXprVE01ODFkalpXVmZoRE55SWpOeDhTT3hJVE12TVRNd0l6TGxOV1l3TjNMelJXWXZ4R2MxOUNkbDVtTGg1V2FvTjJjdjV5WXBSWFkwTjNMdm9EYzBSSGE.jpg" alt="Imágenes en Docker" class="img-responsive">
             <p>Para descargar imágenes de un repositorio externo, se utiliza en comando <kbd>docker pull</kbd></p>
             <p>Cuando se ejecuta un contenedor con el comando <kbd>docker run</kbd> las imágenes son descargadas automáticamente.</p>
             <p>
@@ -113,7 +114,6 @@
                     <li><kbd>docker unpause [ID/nombre del contenedor]</kbd> Permite reanudar un <strong>contenedor</strong> pausado.</li>
                     <li><kbd>docker stop [ID/nombre del contenedor]</kbd> Permite detener un <strong>contenedor</strong> en ejecución.</li>
                     <li><kbd>docker kill [ID/nombre del contenedor]</kbd> Permite matar (detener forzosamente) un <strong>contenedor</strong> en ejecución.</li>
-                    <!-- <li><kbd>docker </kbd></li> -->
                     <li><kbd>docker inspect</kbd> Muestra información útil de un <strong>contenedor</strong>.</li>
                     <li><kbd>docker history [ID/nombre del contenedor]</kbd> Muestra las capas que conforman una imagen con información referente a ella.</li>
                 </ul>
@@ -142,8 +142,9 @@
 
             <h3>Dockerfiles</h3>
             <p>Un <strong>Dockerfile</strong> es un documento de texto que contiene todos los comandos que un usuario puede llamar en la línea de comando para armar una imagen.</p>
+            <img src="https://runnable.com/images/production/dockerfile.svg" alt="Dockerfile" class="img-responsive" width="300px">
             <p>
-                Comandos que podría contener un archivo <strong>Dockerfile</strong>:
+                Instrucciones que podría contener un archivo <strong>Dockerfile</strong>:
 <pre>
     FROM [imagen]:[tag]
     MAINTAINER joaquinaraujojs@gmail.com
@@ -167,6 +168,92 @@
 
                 </ul>
             </p>
+
+            <h3>Volúmenes</h3>
+            <p>Un volumen es un directorio designado en el <strong>contenedor</strong> en el cual la información persiste independientemente del ciclo de vida de dicho <strong>contenedor</strong>.</p>
+            <img src="https://docs.docker.com/engine/userguide/storagedriver/images/shared-volume.jpg" alt="Volúmenes en Docker" class="img-responsive">
+            <p>
+                Algunos comando para gestionar volúmenes en <strong>Docker</strong>
+                <!-- Lista desordenada -->
+                <ul>
+                    <li><kbd>docker volume create --name [nombre]</kbd> Permite crear un volumen y asignarle un nombre.</li>
+                    <li><kbd>docker volume ls</kbd> Lista los volúmenes existentes.</li>
+                    <li><kbd>docker run -it -v [nombre del volumen]:/[punto/directorio de montaje] [imagen] [comando]</kbd> Permite correr un <strong>contenedor</strong> de forma interactiva que contendrá un volumen.</li>
+                    <li><kbd>docker volumen inspect [nombre del volumen]</kbd> Muestra información de interés relacionada al volumen.</li>
+                    <li><kbd>docker volumen rm [nombre del volumen]</kbd> Permite eliminar un volumen.</li>
+                    <!-- <li><kbd>docker </kbd></li> -->
+                </ul>
+            </p>
+
+            <h3>Aspectos de seguridad en Docker</h3>
+            <p>
+                Pasos para configurar <strong>Docker</strong> con TLS:
+                <!-- Lista desordenada -->
+                <ul>
+                    <li><kbd>mkdir docker-ca</kbd></li>
+                    <li><kbd>cd docker-ca</kbd></li>
+                    <li><kbd>openssl genrsa -aes256 -out ca-key.pem 2048</kbd></li>
+                    <li><kbd>openssl req -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem</kbd></li>
+                    <li><kbd>openssl genrsa -out server-key.pem 2048</kbd></li>
+                    <li><kbd>openssl req -subj "/CN=[hostname]" -new -key server-key.pem -out server.csr</kbd></li>
+                    <li><kbd>echo "subjectAltName = IP:[IP/127.0.0.1]" > extfile.cnf</kbd></li>
+                    <li><kbd>openssl x509 -req -days 365 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -extfile extfile.cnf</kbd></li>
+                    <li><kbd>openssl genrsa -out client-key.pem 2048</kbd></li>
+                    <li><kbd>openssl req -subj "/CN=client" -new -key client-key.pem -out client.csr</kbd></li>
+                    <li><kbd>echo "extendedKeyUsage = clientAuth" > extfile.cnf</kbd></li>
+                    <li><kbd>openssl x506 -req -days 365 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out client-cert.pem -extfile extfile.cnf</kbd></li>
+                    <!-- <li><kbd></kbd></li> -->
+                </ul>
+            </p>
+            <p>
+                Pasos para asegurar las claves:
+                <!-- Lista ordenada -->
+                <ol>
+                    <li>
+                        Asegurar las claves del cliente y el servidor de modo que solo puedan ser leídas por el usuario actual:
+                        <kbd>chmod -v 0400 ca-key.pem client-key.pem server-key.pem</kbd>
+                    </li>
+                    <li>
+                        Remover el acceso de escritura a todos los certificados:
+                        <kbd>chmod -v 0444 ca.pem client-cert.pem server-cert.pem</kbd>
+                    </li>
+                    <li>Crear la carpeta <strong>/etc/docker</strong> en caso de que no exista.</li>
+                    <li>
+                        Cambiar los permisos de la carpeta <strong>/etc/docker</strong>:
+                        <kbd>sudo chown <span class="arrows">username</span>:docker /etc/docker</kbd>
+                        <kbd>sudo chmod 700 /etc/docker</kbd>
+                    </li>
+                    <li>
+                        Copiar las claves del servidor a la nueva carpeta:
+                        <kbd>sudo cp ~/docker-ca/{ca, server-key, server-cert}.pem /etc/docker</kbd>
+                    </li>
+                </ol>
+            </p>
+            <p>
+                Pasos para usar <strong>Docker</strong> con TLS:
+                <!-- Lista ordenada -->
+                <ol>
+                    <li>
+                        Iniciar el servicio con los siguientes parámetros:
+<pre>
+    DOCKER_OPTS="-H tcp://0.0.0.0:2376 --tlsverify --tlscacert=/etc/docker/ca.pem --tlscert=/etc/docker/server-cert.pem --tlskey=/etc/docker/server-key.pem" &
+</pre>
+                    </li>
+                    <li>
+                        Reiniciar el servicio de <strong>Docker</strong> en caso de ser necesario:
+                        <kbd>sudo service docker restart</kbd>
+                    </li>
+                    <li>
+                        Utilizar las credenciales correspondientes en el cliente (carpeta docker-ca):
+<pre>
+    docker --tlsverify --tlscacert=./ca.pem --tlscert=./client-cert.pen --tlskey=./client-key.pem -H tcp://127.0.0.1:2376
+</pre>
+                    </li>
+                </ol>
+            </p>
+
+            <h3>Redes</h3>
+            <p>Por defecto, al instalar <strong>Docker</strong> en <strong>Linux</strong> se crea una interfaz de red virtual llamada <strong>docker0</strong> en el equipo host.</p>
         </section>
 
         <section>

@@ -52,3 +52,9 @@
                                                             h1, h2, h3, h4, h5, h6 {
                                                                 font-family: 'Alegreya+Sans', sans-serif;
                                                             }
+                                                                span.arrows:before {
+                                                                    content: "\03c";
+                                                                }
+                                                                span.arrows:after {
+                                                                    content: "\03e";
+                                                                }
