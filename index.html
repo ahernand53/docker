@@ -292,7 +292,7 @@
     redis:
         image: [nombre de la imagen]
     # lb:
-    #     image: tutum/haproxy
+    #     image: dockercloud/haproxy:latest
     #     links:
     #         - web
     #     ports:
@@ -325,6 +325,24 @@
                     <li><kbd>docker-compose scale [servicio]=[instancias de escalar]</kbd> Permite escalar servicios (mapeados en puertos distintos).</li>
                 </ul>
             </p>
+
+            <h3>Redes multi-host y Docker Swarm</h3>
+            <p>Los <strong>contenedores</strong> que corren en diferentes hosts no pueden comunicarse entre sí a menos que expongan sus puertos mediante el host. Multi-host networking habilita a que <strong>contenedores</strong> en diferentes hosts puedan comunicarse sin necesidad de exponer sus puertos.</p>
+            <img src="https://devopscube.com/wp-content/uploads/2016/02/Docker-1.9-container-networking.png" alt="Multi-hosts networking de Docker" class="img-responsive">
+            <p>El <strong>Docker</strong> engine permite realizar multi-hosts networking nativamente mediante el <strong>driver overlay</strong> de red.</p>
+            <p><strong>Docker swarm</strong> permite formar clusters de <strong>Docker</strong> hosts y decide dónde lanzar los <strong>contenedores</strong> (scheduler).</p>
+            <p>
+                Algunas de sus características son:
+                <!-- Lista desordenada -->
+                <ul>
+                    <li>Presenta varios hosts de <strong>Docker</strong> como si fueran uno solo.</li>
+                    <li>Permite distribuir <strong>contenedores</strong> por varios equipos dentro del cluster.</li>
+                    <li>Utiliza la API standard de <strong>Docker</strong>.</li>
+                    <li>Incluye una política simple de programación de <strong>contenedores</strong> y descubrimiento.</li>
+                </ul>
+            </p>
+            <p>Cuando se crea una nueva red en una maquina que no pertenece a un <strong>swarm</strong> la red por defecto es <strong>bridge</strong>, en cambio cuando la maquina pertenece a un <strong>swarm</strong> la red por efecto es <strong>overlay</strong>.</p>
+
         </section>
 
         <section>
